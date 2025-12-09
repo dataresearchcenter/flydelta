@@ -1,8 +1,11 @@
-FROM python:3.14-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir flydelta
+COPY pyproject.toml README.md ./
+COPY flydelta ./flydelta
+
+RUN pip install -q --no-cache-dir .
 
 EXPOSE 8815
 
