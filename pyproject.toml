@@ -32,7 +32,7 @@ Repository = "https://github.com/dataresearchcenter/flydelta"
 Issues = "https://github.com/dataresearchcenter/flydelta/issues"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.4.1"
+pytest = "^9.0.2"
 pytest-cov = ">=4.1,<8.0"
 black = ">=23.11,<26.0"
 isort = "^7.0.0"
