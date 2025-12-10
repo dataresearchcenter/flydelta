@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.11,<4"
 dependencies = [
-    "pyarrow (>=18.0.0,<20.0.0)",
+    "pyarrow (>=22.0.0,<23.0.0)",
     "typer (>=0.17)",
     "rich (>=10.0.0,<15.0.0)",
 ]
