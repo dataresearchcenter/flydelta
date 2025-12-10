@@ -1,3 +1,8 @@
+"""CLI for flydelta.
+
+The serve command requires server dependencies: pip install flydelta[server]
+"""
+
 from typing import Annotated, Optional
 
 import typer
@@ -5,6 +10,7 @@ from rich import print
 from rich.console import Console
 
 from flydelta import __version__
+from flydelta.server import SERVER_DEPS_AVAILABLE
 
 cli = typer.Typer(no_args_is_help=True)
 console = Console(stderr=True)
@@ -12,9 +18,7 @@ console = Console(stderr=True)
 
 @cli.callback(invoke_without_command=True)
 def cli_main(
-    version: Annotated[
-        Optional[bool], typer.Option(..., help="Show version")
-    ] = False,
+    version: Annotated[Optional[bool], typer.Option(..., help="Show version")] = False,
 ):
     if version:
         print(__version__)
@@ -23,7 +27,9 @@ def cli_main(
 
 @cli.command("serve")
 def cli_serve(
-    host: Annotated[str, typer.Option("--host", "-h", help="Host to bind to")] = "0.0.0.0",
+    host: Annotated[
+        str, typer.Option("--host", "-h", help="Host to bind to")
+    ] = "0.0.0.0",
     port: Annotated[int, typer.Option("--port", "-p", help="Port to bind to")] = 8815,
     table: Annotated[
         Optional[list[str]],
@@ -42,6 +48,13 @@ def cli_serve(
     Example:
         flydelta serve -t users=s3://bucket/users -t orders=/data/orders
     """
+    if not SERVER_DEPS_AVAILABLE:
+        console.print(
+            "[red]Server dependencies not installed.[/red]\n"
+            "Install with: [bold]pip install flydelta[server][/bold]"
+        )
+        raise typer.Exit(1)
+
     from flydelta.server import serve
 
     tables = {}
@@ -58,19 +71,27 @@ def cli_serve(
         console.print("[yellow]Warning: No tables registered[/yellow]")
 
     console.print(f"[green]Starting flydelta on grpc://{host}:{port}[/green]")
-    console.print(f"[green]Connection pool size: {pool_size}, batch size: {batch_size}[/green]")
+    console.print(
+        f"[green]Connection pool size: {pool_size}, batch size: {batch_size}[/green]"
+    )
     for name, uri in tables.items():
         console.print(f"  [blue]{name}[/blue] -> {uri}")
 
-    serve(host=host, port=port, tables=tables, pool_size=pool_size, batch_size=batch_size)
+    serve(
+        host=host, port=port, tables=tables, pool_size=pool_size, batch_size=batch_size
+    )
 
 
 @cli.command("query")
 def cli_query(
     sql: Annotated[str, typer.Argument(help="SQL query to execute")],
-    host: Annotated[str, typer.Option("--host", "-h", help="Server host")] = "localhost",
+    host: Annotated[
+        str, typer.Option("--host", "-h", help="Server host")
+    ] = "localhost",
     port: Annotated[int, typer.Option("--port", "-p", help="Server port")] = 8815,
-    output: Annotated[str, typer.Option("--output", "-o", help="Output format")] = "table",
+    output: Annotated[
+        str, typer.Option("--output", "-o", help="Output format")
+    ] = "table",
 ):
     """
     Execute a SQL query against flydelta server.
@@ -98,7 +119,9 @@ def cli_query(
 
 @cli.command("tables")
 def cli_tables(
-    host: Annotated[str, typer.Option("--host", "-h", help="Server host")] = "localhost",
+    host: Annotated[
+        str, typer.Option("--host", "-h", help="Server host")
+    ] = "localhost",
     port: Annotated[int, typer.Option("--port", "-p", help="Server port")] = 8815,
 ):
     """List available tables on flydelta server."""

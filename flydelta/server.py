@@ -1,12 +1,33 @@
-"""Flight SQL server for Delta Lake tables."""
+"""Flight SQL server for Delta Lake tables.
+
+Requires server dependencies: pip install flydelta[server]
+"""
 
 from queue import Queue
-from typing import Any, Generator
+from typing import TYPE_CHECKING, Any, Generator
 
-import duckdb
 import pyarrow as pa
 import pyarrow.flight as flight
-from deltalake import DeltaTable
+
+try:
+    import duckdb
+    from deltalake import DeltaTable
+
+    SERVER_DEPS_AVAILABLE = True
+except ImportError:
+    SERVER_DEPS_AVAILABLE = False
+    if TYPE_CHECKING:
+        import duckdb
+        from deltalake import DeltaTable
+
+
+def _check_server_deps() -> None:
+    """Raise ImportError if server dependencies are not installed."""
+    if not SERVER_DEPS_AVAILABLE:
+        raise ImportError(
+            "Server dependencies not installed. "
+            "Install with: pip install flydelta[server]"
+        )
 
 
 class Server(flight.FlightServerBase):
@@ -19,6 +40,7 @@ class Server(flight.FlightServerBase):
         pool_size: int = 10,
         batch_size: int = 100_000,
     ):
+        _check_server_deps()
         super().__init__(location)
         self.location = location
         self.tables: dict[str, str] = tables or {}
@@ -30,7 +52,7 @@ class Server(flight.FlightServerBase):
         for name, uri in self.tables.items():
             dt = DeltaTable(uri)
             self._delta_tables[name] = dt
-            self._schemas[name] = dt.schema().to_pyarrow()
+            self._schemas[name] = pa.schema(dt.schema().to_arrow())
 
         # Create connection pool with tables pre-registered
         self._pool: Queue[duckdb.DuckDBPyConnection] = Queue(maxsize=pool_size)
@@ -49,9 +71,7 @@ class Server(flight.FlightServerBase):
         finally:
             self._pool.put(conn)
 
-    def _stream_batches(
-        self, query: str
-    ) -> Generator[pa.RecordBatch, None, None]:
+    def _stream_batches(self, query: str) -> Generator[pa.RecordBatch, None, None]:
         """Stream query results as record batches."""
         conn = self._pool.get()
         try:
@@ -96,9 +116,7 @@ class Server(flight.FlightServerBase):
             total_bytes=-1,
         )
 
-    def list_flights(
-        self, context: flight.ServerCallContext, criteria: bytes
-    ) -> Any:
+    def list_flights(self, context: flight.ServerCallContext, criteria: bytes) -> Any:
         """List available tables."""
         for name, schema in self._schemas.items():
             descriptor = flight.FlightDescriptor.for_path(name)

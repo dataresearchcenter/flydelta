@@ -5,7 +5,7 @@ WORKDIR /app
 COPY pyproject.toml README.md ./
 COPY flydelta ./flydelta
 
-RUN pip install -q --no-cache-dir .
+RUN pip install -q --no-cache-dir ".[server]"
 
 EXPOSE 8815
 

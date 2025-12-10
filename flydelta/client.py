@@ -30,16 +30,6 @@ class Client:
             return pa.table({})
         return pa.Table.from_batches(batches)
 
-    def query_df(self, sql: str):
-        """Execute a SQL query and return results as pandas DataFrame."""
-        return self.query(sql).to_pandas()
-
-    def query_polars(self, sql: str):
-        """Execute a SQL query and return results as polars DataFrame."""
-        import polars as pl
-
-        return pl.from_arrow(self.query(sql))
-
     def list_tables(self) -> list[str]:
         """List available tables on the server."""
         tables = []

@@ -59,14 +59,11 @@ docker run -p 8815:8815 flydelta -t users=/data/users -t orders=/data/orders
 from flydelta import Client
 
 with Client("grpc://localhost:8815") as client:
-    # Query to pandas DataFrame
-    df = client.query_df("SELECT * FROM users WHERE active = true")
-
-    # Query to polars DataFrame
-    df = client.query_polars("SELECT * FROM users LIMIT 1000")
-
     # Query to Arrow table
-    table = client.query("SELECT COUNT(*) FROM orders")
+    table = client.query("SELECT * FROM users WHERE active = true")
+
+    # Convert to pandas DataFrame
+    df = table.to_pandas()
 
     # List available tables
     tables = client.list_tables()
