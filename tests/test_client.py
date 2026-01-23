@@ -17,7 +17,7 @@ def test_client_query_to_pandas(client):
     df = result.to_pandas()
 
     assert df.__class__.__name__ == "DataFrame"
-    assert df.__class__.__module__ == "pandas.core.frame"
+    assert df.__class__.__module__ == "pandas"
     assert len(df) == 5
     assert list(df.columns) == ["id", "name", "value", "active"]
 
