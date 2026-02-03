@@ -3,7 +3,7 @@
 from flydelta.client import Client
 from flydelta.server import SERVER_DEPS_AVAILABLE
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __all__ = ["Client", "__version__"]
 
 if SERVER_DEPS_AVAILABLE:
