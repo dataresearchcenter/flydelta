@@ -3,7 +3,7 @@ from typer.testing import CliRunner
 from flydelta import __version__
 from flydelta.cli import cli
 
-runner = CliRunner()
+runner = CliRunner(env={"NO_COLOR": "1"})
 
 
 def test_cli_version():
@@ -19,9 +19,9 @@ def test_cli_help():
     result = runner.invoke(cli, ["--help"])
 
     assert result.exit_code == 0
-    # assert "serve" in result.output
-    # assert "query" in result.output
-    # assert "tables" in result.output
+    assert "serve" in result.output
+    assert "query" in result.output
+    assert "tables" in result.output
 
 
 def test_cli_serve_help():
