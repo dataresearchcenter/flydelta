@@ -51,6 +51,8 @@ jobs:
         run: make lint
       - name: Test with pytest
         run: make test
+        env:
+          NO_COLOR: "1"
       - name: Test building
         run: poetry build
       - name: Coveralls
