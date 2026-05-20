@@ -25,7 +25,7 @@ dependencies = [
 [project.optional-dependencies]
 server = [
     "deltalake (>=1.5.1,<2.0.0)",
-    "duckdb (>=1.5.2,<2.0.0)",
+    "duckdb (>=1.5.3,<2.0.0)",
 ]
 
 [project.scripts]
