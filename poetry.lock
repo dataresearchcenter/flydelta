@@ -370,20 +370,17 @@ files = [
 
 [[package]]
 name = "deltalake"
-version = "1.5.1"
+version = "1.6.1"
 description = "Native Delta Lake Python binding based on delta-rs with Pandas integration"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"server\""
 files = [
-    {file = "deltalake-1.5.1-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:1ddbcd7ee3eeb9a776db7445a36bde78a94a131abe09450b0c4c4b83e8ae79d1"},
-    {file = "deltalake-1.5.1-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:f3462997e6767382d178cb16e63a30a7a101af08403f7a59c0089a4afdba507b"},
-    {file = "deltalake-1.5.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:96c00b7334f19d6e71e184b333ac85bb6c61ddfb1e14dc276f99f6c62061c13b"},
-    {file = "deltalake-1.5.1-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:4a7afb96f379a07ec4f97fc69d3afa3a6355a2302b2fd790a91f0a1dc7b8e6a4"},
-    {file = "deltalake-1.5.1-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:0f792f95f4b53d820ae045051dd28f8815a314b6d6165cf81e86250070152579"},
-    {file = "deltalake-1.5.1-cp310-abi3-win_amd64.whl", hash = "sha256:e3e93a90fa19174b39b66d28fd2d83d99bfb946649b49efa2db602a25a6a4a0c"},
-    {file = "deltalake-1.5.1.tar.gz", hash = "sha256:e75f5c0c0e3a4aae350701fd2c4122d57a182eddce335c5554ea345984d18885"},
+    {file = "deltalake-1.6.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:46a13abc2d7abc072375faeb718443be61ec1162d1708b1c67a76aff4e0187a5"},
+    {file = "deltalake-1.6.1-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:d5ba7bbea9d61948ba7caaaa1562bb9997bdf2398ba30d60e99006451098fb01"},
+    {file = "deltalake-1.6.1-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:89c68fef155215a2e8cd7d93762cadc3be99d6aa42486a30e88a236b4edc7140"},
+    {file = "deltalake-1.6.1-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:91d8c064ce04cdd06bbdd66614df7050c1082871ca60054cc5b5074d0e3fc345"},
 ]
 
 [package.dependencies]
@@ -392,7 +389,7 @@ deprecated = ">=1.2.18"
 
 [package.extras]
 pandas = ["pandas"]
-pyarrow = ["pyarrow (>=16)"]
+pyarrow = ["pyarrow (>=21)"]
 
 [[package]]
 name = "deprecated"
@@ -1781,4 +1778,4 @@ server = ["deltalake", "duckdb"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4"
-content-hash = "d736c7f1b7d152a7057d0dcebbfc56460bdbf9de2e16c236325341191d8b0f43"
+content-hash = "fb528afd3f5ff7cc9f38f9649f30e0aa5a87311fd213ee89fb2a632c9c7fc274"
